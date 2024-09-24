@@ -95,7 +95,6 @@ set backspace=start,eol,indent
 " memo
 let g:memolist_path = '~/memo'
 
-
 " ===== Apppearance =====
 set termguicolors
 let g:tokyonight_style = 'storm' " available: night, storm
@@ -152,6 +151,9 @@ call jetpack#begin()
 	Jetpack 'ghifarit53/tokyonight-vim'
 	Jetpack 'sheerun/vim-polyglot'
 	Jetpack 'glidenote/memolist.vim'
+
+	" comment
+	Jetpack 'tomtom/tcomment_vim'
 call jetpack#end()
 
 " Unite settings
@@ -175,6 +177,4 @@ let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffse
 let mapleader = "\<Space>"
 nnoremap <C-f> :Files <CR>
 nnoremap <silent> <leader>f :Files<CR>
-
-
 

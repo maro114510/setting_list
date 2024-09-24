@@ -9,6 +9,7 @@ return {
 		{ 'williamboman/mason.nvim', config = true },
 		'williamboman/mason-lspconfig.nvim',
 		'folke/neodev.nvim',
+		'jose-elias-alvarez/null-ls.nvim',
 	},
 	config = function()
 		local on_attach = function(_, bufnr)
@@ -21,7 +22,7 @@ return {
 					"n",
 					keys,
 					func,
-					{ buffer = bufnr, description = desc }
+					{ buffer = bufnr, noremap = true, silent = true, desc = desc }
 				)
 			end
 
@@ -32,7 +33,7 @@ return {
 			nmap("rnm", vim.lsp.buf.rename, "[R]rename [N]ame")
 
 			nmap("<space>D", vim.lsp.buf.type_definition, "[D]efinition")
-			nmap("gD", vim.lsp.buf.declearation, "[G]oto [D]eclaration")
+			-- nmap("gD", vim.lsp.buf.declearation, "[G]oto [D]eclaration")
 
 			nmap("<space>wl", function()
 				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
@@ -56,6 +57,8 @@ return {
 					telemetry = { enable = false },
 				},
 			},
+			-- ts_ls = {},
+			-- tsserver = {},
 		}
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -68,6 +71,10 @@ return {
 
 		mason_lspconfig.setup_handlers {
 			function(server_name)
+				--[[ if server_name == "tsserver" then
+					server_name = "ts_ls"
+				end ]]
+
 				require("lspconfig")[server_name].setup {
 					on_attach = on_attach,
 					capabilities = capabilities,
@@ -78,6 +85,19 @@ return {
 			end
 		}
 
+		-- Prettier を null-ls を通して利用するようにする
+		local null_ls = require("null-ls")
+		null_ls.setup({
+			sources = {
+				null_ls.builtins.formatting.prettier,
+			},
+			on_attach = on_attach,
+		})
+
+		--[[ require("lspconfig").ts_ls.setup {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		} ]]
 		require("lspconfig").typos_lsp.setup {}
 		require("lspconfig").gopls.setup {
 			on_attach = on_attach,

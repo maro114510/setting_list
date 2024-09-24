@@ -1,5 +1,6 @@
-# Q pre block. Keep at the top of this file.
+# Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
+# Q pre block. Keep at the top of this file.
 # zmodload zsh/zprof && zprof
 
 # calculate the time it takes to load zshrc
@@ -82,12 +83,15 @@ export ZSH="$HOME/.oh-my-zsh"
 # export NVM_COMPLETION=true
 
 plugins=(
-	git
-	zsh-syntax-highlighting
-	zsh-completions
-	zsh-autosuggestions
-	z
-	asdf
+  git
+  # autojump
+  urltools
+  # bgnotify
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  # zsh-history-enquirer
+  # jovial
+  z
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -148,8 +152,8 @@ elif [ "$(uname)" = "Darwin" ]; then
 	export GOPATH=$HOME/go
 	export GOBIN=$GOPATH/bin
 	export PATH=$PATH:$GOBIN
-	export PATH=$PATH:$HOME/.asdf/shims
-	export PATH=$PATH:$(go env GOPATH)/bin
+	# export PATH=$PATH:$HOME/.asdf/shims
+	# export PATH=$PATH:$(go env GOPATH)/bin
 fi
 
 
@@ -198,7 +202,7 @@ alias cl='clear'
 alias xh='xh -s monokai'
 alias f='fvm flutter'
 alias d='fvm dart'
-alias git commit='git commit -S'
+alias gitmo='gitmoji -c'
 
 alias ac='sh ~/commands/auto_commit.sh'
 alias めも='sh ~/commands/create_memo.sh'
@@ -285,6 +289,27 @@ fkill() {
 frm() {
     ls -al | fzf -m | xargs -I {} rm {}
 }
+# Search with Browser
+# https://s10i.me/whitenote/post/40
+gog() {
+    if [ $(echo $1 | grep "^-[cfs]$") ]; then
+        local opt=$1
+        shift
+    fi
+    local url="https://google.co.jp/search?q=${*// /+}"
+    local c="Google Chrome"
+    local f="Firefox"
+    local s="Safari"
+    case $opt in
+        -c ) open $url -a $c;;
+        -f ) open $url -a $f;;
+        -s ) open $url -a $s;;
+        * ) open $url;;
+    esac
+}
+
+### Android Studio ###
+export PATH=$PATH:/Users/nohira/Library/Android/sdk/platform-tools
 
 # bun completions
 [ -s "/Users/atsuki/.bun/_bun" ] && source "/Users/atsuki/.bun/_bun"
@@ -298,8 +323,14 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # fi
 
 # Q post block. Keep at the bottom of this file.
+export GPG_TTY=$(tty)
+
+export GPG_TTY=$(tty)
+export HOMEBREW_NO_AUTO_UPDATE=true
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+eval "$(atuin init zsh)"
+eval "$(direnv hook zsh)"
+
+# Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
-
-export GPG_TTY=$(tty)
-
-export GPG_TTY=$(tty)
