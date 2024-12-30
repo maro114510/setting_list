@@ -55,4 +55,3 @@ require("lualine").setup({
 })
 
 require("config")
-
